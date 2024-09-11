@@ -14,13 +14,13 @@ class Property(models.Model):
     selling_price = fields.Float(string="Selling Price",readonly=True,copy=False)
 
     bedrooms = fields.Integer(string="Bedrooms", default=2)
-    living_area = fields.Integer(string="Living Area")
+    living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer(string="Facades")
 
     garage = fields.Boolean(string="Garage")
     garden = fields.Boolean(string="Garden")
 
-    garden_area = fields.Integer(string="Garden Area")
+    garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection([('north','North'),('south','South'),('east','East'),('west','West')],string="Garden Orientation")
 
     state = fields.Selection([('new','New'),('offer_recieved','Offer Recieved'),('offer_accepted','Offer Accepted'),('sold','Sold'),('canceled','Canceled')],string="State",default='new',copy=False,required=True)
