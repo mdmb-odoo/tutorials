@@ -2,8 +2,6 @@ from odoo import models, fields
 
 class Property(models.Model):
     _name = "estate_property"
-    _log_access = False
-
 
     name = fields.Char(string="Name",required=True)
     description = fields.Text(string="Description")
@@ -25,3 +23,11 @@ class Property(models.Model):
 
     state = fields.Selection([('new','New'),('offer_recieved','Offer Recieved'),('offer_accepted','Offer Accepted'),('sold','Sold'),('canceled','Canceled')],string="State",default='new',copy=False,required=True)
     active = fields.Boolean(string="Active", default=True)
+
+    property_type_id = fields.Many2one("property_type",string="Type")
+    salesman_id = fields.Many2one("res.users",string="Salesman", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.partner",string="Buyer", copy=False)
+    property_tags_ids = fields.Many2many("property_tag",string="Tags", copy=False)
+
+    # property_offers_ids = fields.Many2one("property_offer", string="Prop-Off m2o")
+    property_offers_ids = fields.One2many("property_offer","property_id", string="Property Offers", copy=False)

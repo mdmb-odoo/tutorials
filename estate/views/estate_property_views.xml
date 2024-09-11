@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="test_search_bar" model="ir.ui.view">
+    <record id="property_search_bar" model="ir.ui.view">
         <field name="name">estate_property.view.search</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
@@ -11,22 +11,25 @@
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="facades" />
+                <field name="property_tags_ids" />
+                <field name="property_type_id" />
                 <separator />
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]" />
                 <filter string="Available" name="available" domain="['|',('state', '=', 'new'),('state', '=', 'offer_recieved')]" />
                 <filter string="Available2" name="available2" domain="[('state', 'in', ['new','offer_recieved'])]" />
                 <group expand="1" string="Group By">
                     <filter string="PostCode" name="postcode" context="{'group_by':'postcode'}" />
+                    <filter string="Tags" name="tags" context="{'group_by':'property_tags_ids'}" />
                 </group>
             </search>
         </field>
     </record>
-    <record id="test_model_action" model="ir.actions.act_window">
+    <record id="property_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate_property</field>
         <field name="view_mode">tree,form</field>
     </record>
-    <record id="test_tree_view" model="ir.ui.view">
+    <record id="property_tree_view" model="ir.ui.view">
         <field name="name">estate_property.tree</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
@@ -41,7 +44,7 @@
             </tree>
         </field>
     </record>
-    <record id="test_form" model="ir.ui.view">
+    <record id="property_form" model="ir.ui.view">
         <field name="name">estate_property.form</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
@@ -72,6 +75,21 @@
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
                                 <field name="state"/>
+                                <field name="property_type_id"/>
+                                <field name="property_tags_ids" widget="many2many_tags" />
+                            </group>
+                        </page>
+
+                        <page string="Offers">
+                            <group class="w-50">
+                                <field name="property_offers_ids"/>
+                            </group>
+                        </page>
+
+                        <page string="Other Info">
+                            <group class="w-50">
+                                <field name="salesman_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
