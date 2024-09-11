@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class Property(models.Model):
     _name = "estate_property"
@@ -31,3 +31,28 @@ class Property(models.Model):
 
     # property_offers_ids = fields.Many2one("property_offer", string="Prop-Off m2o")
     property_offers_ids = fields.One2many("property_offer","property_id", string="Property Offers", copy=False)
+
+    total_area = fields.Float(compute="_compute_total")
+    best_price = fields.Float(compute="_compute_best_price")
+
+    @api.depends('living_area','garden_area')
+    def _compute_total(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends('property_offers_ids.selling_price')
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.property_offers_ids.mapped("selling_price"),default=0)
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ""
+
+
+
