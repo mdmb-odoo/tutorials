@@ -51,6 +51,10 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form string="Test">
+                <header>
+                    <button name="property_state_change" type="object" string="Sold" class="btn-success" context="{'type': 'sold'}" />
+                    <button name="property_state_change" type="object" string="Cancel" class="btn-danger" context="{'type': 'cancel'}" />
+                </header>
                 <sheet>
                     <group>
                         <field name="name" class="display-4 p-4" />

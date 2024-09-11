@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 class Property(models.Model):
     _name = "estate_property"
@@ -53,6 +54,18 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+
+    def property_state_change(self):
+        if self.env.context.get('type')=='sold':
+            if self.state in ['canceled','sold']:
+                raise UserError("Canceled or Sold house cannot be sold again")
+            self.state = 'sold'
+        elif self.env.context.get('type')=='cancel':
+            if self.state in ['canceled','sold']:
+                raise UserError("Canceled or Sold house cannot be canceled again")
+            self.state = 'canceled'
+
+        
 
 
 
