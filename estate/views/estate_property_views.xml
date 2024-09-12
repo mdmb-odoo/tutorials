@@ -54,6 +54,7 @@
                 <header>
                     <button name="property_state_change" type="object" string="Sold" class="btn-success" context="{'type': 'sold'}" />
                     <button name="property_state_change" type="object" string="Cancel" class="btn-danger" context="{'type': 'cancel'}" />
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <group>
@@ -80,7 +81,6 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
-                                <field name="state"/>
                                 <field name="property_type_id"/>
                                 <field name="property_tags_ids" widget="many2many_tags" />
                                 <field name="total_area"/>
@@ -89,9 +89,7 @@
                         </page>
 
                         <page string="Offers">
-                            <group class="w-50">
-                                <field name="property_offers_ids"/>
-                            </group>
+                            <field name="property_offers_ids"/>
                         </page>
 
                         <page string="Other Info">
