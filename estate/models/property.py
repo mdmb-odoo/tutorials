@@ -1,5 +1,6 @@
-from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo import models, fields, api, tools
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_is_zero, float_compare
 
 class Property(models.Model):
     _name = "estate_property"
@@ -36,6 +37,10 @@ class Property(models.Model):
     total_area = fields.Float(compute="_compute_total")
     best_price = fields.Float(compute="_compute_best_price")
 
+    _sql_constraints = [
+        ('check_positive_ints','CHECK(expected_price >= 0 AND selling_price>=0)','Number must be positive')
+    ]
+
     @api.depends('living_area','garden_area')
     def _compute_total(self):
         for record in self:
@@ -54,6 +59,26 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        if float_compare(self.selling_price, self.expected_price,4)==-1:
+            if self.selling_price / self.expected_price < 0.9 and self.env.context.get('type')=="offer_accepted":
+                raise ValidationError("Selling price is low")
+            
+    @api.constrains('expected_price')
+    # @api.onchange('expected_price')
+    def _check_exepected_price(self):
+        if not float_is_zero(self.selling_price, 4):
+            if float_compare(self.selling_price, self.expected_price,4)==-1:
+                if self.selling_price / self.expected_price < 0.9:
+                    self.property_offers_ids.filtered(lambda r: r.status == 'offer_accepted').status='offer_refused'
+                    self.buyer_id = ""
+                    self.selling_price = 0
+                    # return {
+                    #             'warning': {'title': "Warning", 'message': "What is this?", 'type': 'notification'},
+                    #         }         
+                
 
     def property_state_change(self):
         if self.env.context.get('type')=='sold':
