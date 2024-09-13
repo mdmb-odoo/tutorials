@@ -11,7 +11,21 @@
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
-                    <field name="name" class="display-4 p-4" />
+                    <div class="oe_button_box" name="button_box">
+                        <button 
+                            name="show_offers" 
+                            type="object" 
+                            class="oe_stat_button float-end"
+                            icon="fa-money"
+                        >
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
                     <notebook>   
                         <page string="Properties">
                             <field name="property_ids">
@@ -23,59 +37,18 @@
                             </field>
                         </page>
                     </notebook>
-                    <!-- <header>
-                        <button name="property_state_change" type="object" string="Sold" class="btn-success" context="{'type': 'sold'}" />
-                        <button name="property_state_change" type="object" string="Cancel" class="btn-danger" context="{'type': 'cancel'}" />
-                    </header>
-                    <sheet>
-                        <group>
-                            <field name="name" class="display-4 p-4" />
-                            <group>
-                                <group>
-                                    <field name="postcode" />
-                                    <field name="date_availability" />
-                                </group>
-                                <group>
-                                    <field name="expected_price" />
-                                    <field name="selling_price" />
-                                </group>
-                            </group>
-                        </group>
-                        <notebook>
-                            <page string="Description">
-                                <group class="w-50">
-                                    <field name="description" />
-                                    <field name="bedrooms" />
-                                    <field name="living_area" />
-                                    <field name="facades" />
-                                    <field name="garage" />
-                                    <field name="garden" />
-                                    <field name="garden_area" />
-                                    <field name="garden_orientation" />
-                                    <field name="state"/>
-                                    <field name="property_type_id"/>
-                                    <field name="property_tags_ids" widget="many2many_tags" />
-                                    <field name="total_area"/>
-                                    <field name="best_price"/>
-                                </group>
-                            </page>
-
-                            <page string="Offers">
-                                <group class="w-50">
-                                    <field name="property_offers_ids"/>
-                                </group>
-                            </page>
-
-                            <page string="Other Info">
-                                <group class="w-50">
-                                    <field name="salesman_id"/>
-                                    <field name="buyer_id"/>
-                                </group>
-                            </page>
-                        </notebook>
-                    </sheet> -->
                 </sheet>
             </form>
+        </field>
+    </record>
+    <record id="property_type_tree_view" model="ir.ui.view">
+        <field name="name">property_type.tree</field>
+        <field name="model">property_type</field>
+        <field name="arch" type="xml">
+            <tree string="Property Types">
+                <field name="sequence" widget="handle"/>
+                <field name="name" />
+            </tree>
         </field>
     </record>
 </odoo>

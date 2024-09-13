@@ -5,4 +5,13 @@
         <field name="res_model">property_tag</field>
         <field name="view_mode">tree,form</field>
     </record>
+    <record id="property_tag_tree_view" model="ir.ui.view">
+        <field name="name">property_tag.tree</field>
+        <field name="model">property_tag</field>
+        <field name="arch" type="xml">
+            <tree string="Tags" editable="bottom" >
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
 </odoo>
