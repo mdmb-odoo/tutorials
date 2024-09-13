@@ -9,14 +9,16 @@
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
-                <field name="living_area" />
+                <field 
+                    name="living_area" 
+                    filter_domain="[('living_area','>=',self)]"
+                />
                 <field name="facades" />
                 <field name="property_tags_ids" />
                 <field name="property_type_id" />
                 <separator />
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]" />
-                <filter string="Available" name="available" domain="['|',('state', '=', 'new'),('state', '=', 'offer_recieved')]" />
-                <filter string="Available2" name="available2" domain="[('state', 'in', ['new','offer_recieved'])]" />
+                <filter string="Available" name="available" domain="[('state', 'in', ['new','offer_recieved'])]" />
                 <group expand="1" string="Group By">
                     <filter string="PostCode" name="postcode" context="{'group_by':'postcode'}" />
                     <filter string="Tags" name="tags" context="{'group_by':'property_tags_ids'}" />
@@ -28,21 +30,28 @@
         <field name="name">Properties</field>
         <field name="res_model">estate_property</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
     <record id="property_tree_view" model="ir.ui.view">
         <field name="name">estate_property.tree</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
-            <tree string="Properties">
+            <tree 
+                string="Properties"  
+                decoration-success="state in ['offer_recieved','offer_accepted']" 
+                decoration-bf="state =='offer_accepted'" 
+                decoration-muted="state == 'sold'"
+            >
                 <field name="name" />
+                <field name="property_type_id"/>
                 <field name="postcode" />
+                <field name="property_tags_ids" widget="many2many_tags"/> 
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="date_availability" />
-                <field name="total_area" />
-                <field name="best_price"/>
+                <field name="date_availability" optional="hide"/>
+                <field name="state" invisible="true"/>
             </tree>
         </field>
     </record>
@@ -52,8 +61,9 @@
         <field name="arch" type="xml">
             <form string="Test">
                 <header>
-                    <button name="property_state_change" type="object" string="Sold" class="btn-success" context="{'type': 'sold'}" />
-                    <button name="property_state_change" type="object" string="Cancel" class="btn-danger" context="{'type': 'cancel'}" />
+                    <button name="property_state_change" type="object" string="Sold" class="btn-success" context="{'type': 'sold'}" invisible="state in ['sold', 'canceled']"/>
+                    <button name="property_state_change" type="object" string="Cancel" class="btn-danger" context="{'type': 'cancel'}" invisible="state in ['sold', 'canceled']" />
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <group>
@@ -78,20 +88,17 @@
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
-                                <field name="state"/>
-                                <field name="property_type_id"/>
-                                <field name="property_tags_ids" widget="many2many_tags" />
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="property_type_id" options="{'no_create': true}" />
+                                <field name="property_tags_ids" widget="many2many_tags" options="{'color_field':'color'}" />
                                 <field name="total_area"/>
                                 <field name="best_price"/>
                             </group>
                         </page>
 
                         <page string="Offers">
-                            <group class="w-50">
-                                <field name="property_offers_ids"/>
-                            </group>
+                            <field name="property_offers_ids" readonly="state in ['offer_accepted', 'sold', 'canceled']"/>
                         </page>
 
                         <page string="Other Info">

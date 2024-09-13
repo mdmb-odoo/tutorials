@@ -4,6 +4,7 @@ from odoo.tools.float_utils import float_is_zero, float_compare
 
 class Property(models.Model):
     _name = "estate_property"
+    _order = "id desc"
 
     name = fields.Char(string="Name",required=True)
     description = fields.Text(string="Description")
@@ -51,6 +52,18 @@ class Property(models.Model):
         for record in self:
             record.best_price = max(record.property_offers_ids.mapped("selling_price"),default=0)
 
+    @api.onchange('property_offers_ids')
+    def _offer_recieve(self):
+        if self.state=='new' and len(self.property_offers_ids)>0:
+            self.state = 'offer_recieved'
+        elif self.state not in ['sold','canceled'] and (len(self.property_offers_ids)==0 or len(self.property_offers_ids.filtered(lambda r: r.status == 'offer_accepted'))==0):
+            if len(self.property_offers_ids)==0:
+                self.state = 'new'
+            else:
+                self.state = 'offer_recieved'
+        
+
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -78,7 +91,6 @@ class Property(models.Model):
                     # return {
                     #             'warning': {'title': "Warning", 'message': "What is this?", 'type': 'notification'},
                     #         }         
-                
 
     def property_state_change(self):
         if self.env.context.get('type')=='sold':
@@ -91,6 +103,14 @@ class Property(models.Model):
             self.state = 'canceled'
 
         
-
+# return {
+#         'type': 'ir.actions.client',
+#         'tag': 'display_notification',
+#         'params': {
+#             'title': _('Success'),
+#             'message': _('Your signature request has been sent.'),
+#             'sticky': False,
+#         }
+#     }
 
 
