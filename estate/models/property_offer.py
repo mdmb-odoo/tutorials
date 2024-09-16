@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 class PropertyOffer(models.Model):
     _name = "property_offer"
@@ -29,6 +29,18 @@ class PropertyOffer(models.Model):
             else:
                 record.date_deadline = fields.Date.add(fields.Date.today(),days=record.validity)
     
+    @api.model
+    def create(self, vals):
+        prop = self.env['estate_property'].browse(vals['property_id'])
+        if len(prop.property_offers_ids)==0:
+            prop.state = 'offer_recieved'
+        else:
+            for offer in prop.property_offers_ids:
+                if vals['selling_price'] < offer.selling_price:
+                    raise ValidationError('Selling price cannot be less than an existing offer')
+        return super(PropertyOffer, self).create(vals)
+
+
     def _inverse_deadline_date(self):
         for record in self:
             record.validity = (record.date_deadline-fields.Date.to_date(record.create_date)).days
@@ -48,3 +60,5 @@ class PropertyOffer(models.Model):
             self.status = 'offer_refused'
             self.property_id.buyer_id = ""
             self.property_id.selling_price = 0
+
+    

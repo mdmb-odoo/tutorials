@@ -17,6 +17,19 @@
             parent="advertisements_menu_item"
         />
 
+        <!-- HEADER: USERS&COMPANIES -->
+        <menuitem 
+            id="users_and_comps_menu_item" 
+            name="Users &amp; Companies"
+            parent="estate.test_menu_root"
+        />
+        <menuitem 
+            name="Users"
+            id="users_menu_item"
+            parent="users_and_comps_menu_item"
+            action="base.action_res_users"
+        />
+
         <!-- HEADER: SETTINGS -->
        <menuitem 
             id="settings_menu_item" 
