@@ -52,17 +52,22 @@ class Property(models.Model):
         for record in self:
             record.best_price = max(record.property_offers_ids.mapped("selling_price"),default=0)
 
-    @api.onchange('property_offers_ids')
-    def _offer_recieve(self):
-        if self.state=='new' and len(self.property_offers_ids)>0:
-            self.state = 'offer_recieved'
-        elif self.state not in ['sold','canceled'] and (len(self.property_offers_ids)==0 or len(self.property_offers_ids.filtered(lambda r: r.status == 'offer_accepted'))==0):
-            if len(self.property_offers_ids)==0:
-                self.state = 'new'
-            else:
-                self.state = 'offer_recieved'
+    # @api.onchange('property_offers_ids')
+    # def _offer_recieve(self):
+    #     if self.state=='new' and len(self.property_offers_ids)>0:
+    #         self.state = 'offer_recieved'
+    #     elif self.state not in ['sold','canceled'] and (len(self.property_offers_ids)==0 or len(self.property_offers_ids.filtered(lambda r: r.status == 'offer_accepted'))==0):
+    #         if len(self.property_offers_ids)==0:
+    #             self.state = 'new'
+    #         else:
+    #             self.state = 'offer_recieved'
         
-
+    @api.ondelete(at_uninstall=False)
+    def delete(self):
+        for record in self:
+            if record.state not in ['new','canceled']:
+                raise ValidationError("Property cannot be deleted, Cancel it first.")
+    
 
     @api.onchange('garden')
     def _onchange_garden(self):

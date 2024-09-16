@@ -3,3 +3,4 @@
 "property_type_access","property_type_access","model_property_type","base.group_user",1,1,1,1
 "property_tag_access","property_tag_access","model_property_tag","base.group_user",1,1,1,1
 "property_offer_access","property_offer_access","model_property_offer","base.group_user",1,1,1,1
+"property_salesmen_access","property_salesmen_access","model_res_users","base.group_user",1,1,1,1
