@@ -9,7 +9,7 @@ class PropertyOffer(models.Model):
     status = fields.Selection([('offer_accepted','Offer Accepted'),('offer_refused','Offer Refused')],string="Status",copy=False,readonly=True)
     
     property_id = fields.Many2one("estate_property",string="Property", required=True)
-    property_type_ids = fields.Many2one(related="property_id.property_type_id", string="Property Type")
+    property_type_id = fields.Many2one(related="property_id.property_type_id", string="Property Type")
     buyer_id = fields.Many2one("res.partner",string="Buyer", required=True)
 
     validity = fields.Integer(string="Validity (Days)", default=7)
@@ -31,11 +31,11 @@ class PropertyOffer(models.Model):
     
     @api.model
     def create(self, vals):
-        prop = self.env['estate_property'].browse(vals['property_id'])
-        if len(prop.property_offers_ids)==0:
-            prop.state = 'offer_recieved'
+        props = self.env['estate_property'].browse(vals['property_id'])
+        if len(props.property_offers_ids)==0:
+            props.state = 'offer_recieved'
         else:
-            for offer in prop.property_offers_ids:
+            for offer in props.property_offers_ids:
                 if vals['selling_price'] < offer.selling_price:
                     raise ValidationError('Selling price cannot be less than an existing offer')
         return super(PropertyOffer, self).create(vals)

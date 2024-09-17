@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="property_offer_model_menu_action" model="ir.actions.act_window">
+    <record id="property_offer_action_child_list" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">property_offer</field>
         <field name="view_mode">tree,form</field>
     </record>
-    <record id="property_offer_tree_view" model="ir.ui.view">
+    <record id="property_offer_view_tree" model="ir.ui.view">
         <field name="name">property_offer.tree</field>
         <field name="model">property_offer</field>
         <field name="arch" type="xml">
