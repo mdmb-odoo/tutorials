@@ -35,7 +35,7 @@ class Property(models.Model):
     # property_offers_ids = fields.Many2one("property_offer", string="Prop-Off m2o")
     property_offers_ids = fields.One2many("property_offer","property_id", string="Property Offers", copy=False)
 
-    total_area = fields.Float(compute="_compute_total")
+    total_area = fields.Float(compute="_compute_total_prop_area")
     best_price = fields.Float(compute="_compute_best_price")
 
     _sql_constraints = [
@@ -43,7 +43,7 @@ class Property(models.Model):
     ]
 
     @api.depends('living_area','garden_area')
-    def _compute_total(self):
+    def _compute_total_prop_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 

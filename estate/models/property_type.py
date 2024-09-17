@@ -1,5 +1,7 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+
+
 class PropertyType(models.Model):
     _name = "property_type"
     _order = "sequence, name"
@@ -24,7 +26,7 @@ class PropertyType(models.Model):
     @api.depends('offer_count')
     def show_offers(self):
         action = {
-            'name': ('Property Type Offers'),
+            'name': _('Property Type Offers'),
             'type': 'ir.actions.act_window',
             'res_model': 'property_offer'
         }
@@ -32,6 +34,7 @@ class PropertyType(models.Model):
         action['view_mode'] = 'tree,form'
         action['domain'] = [('id', 'in', offer_ids.mapped('id'))]
         return action
+    
     # @api.constrains('name')
     # def check_unique(self):
     #     self.env.cr.execute(" SELECT CASE " \
@@ -44,5 +47,4 @@ class PropertyType(models.Model):
     #                         "END AS name_does_not_exist;"\
     #                         ,[self.name])
     #     if not self.env.cr.fetchall()[0][0]:
-    #         raise ValidationError("Name already exists")
-        
+    #         raise ValidationError("Name already exists") 
