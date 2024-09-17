@@ -60,5 +60,3 @@ class PropertyOffer(models.Model):
             self.status = 'offer_refused'
             self.property_id.buyer_id = ""
             self.property_id.selling_price = 0
-
-    

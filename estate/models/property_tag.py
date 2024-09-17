@@ -9,4 +9,3 @@ class PropertyType(models.Model):
     _sql_constraints = [
         ('check_unique','UNIQUE(name)','Tag must be unique')
     ]
-    
