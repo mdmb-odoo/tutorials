@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todoitem">
+        <div class="input-group">
+             <Card class="{ 'text-muted text-decoration-line-through' : props.isCompleted }">
+                <t t-set-slot="title">
+                    <span class="p-2"><t t-out="props.item_id"/>-</span>
+                    <span class="p-2"><t t-out="props.description"/></span>
+                </t>
+                <t t-set-slot="content">
+                    <span class="p-2"><input type="checkbox" t-on-click="toggleState"/></span>
+                    <span class="p-2"><span class='fa fa-remove' t-on-click="removeTodo"/></span>
+                </t>
+             </Card>
+        </div>
+    </t>
+
+</templates>

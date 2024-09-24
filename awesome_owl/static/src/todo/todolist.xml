@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todolist">
+        <div class="input-group mb-3">
+            <!-- <input id="taskInput" t-ref="toDoListInput" type="text" class="form-control" placeholder="Add Task" t-on-keyup="ev => this.addTask(ev)"/> -->
+            <input id="taskInput" t-ref="toDoListInput" type="text" class="form-control" placeholder="Add Task" t-on-keyup="ev => this.addTask(ev)"/>
+        </div>
+        <t t-foreach="todos" t-as="i" t-key="i.item_id">
+            <TodoItem t-if="i.description" item_id="i.item_id" description="i.description" isCompleted="i.isCompleted" onChange.bind="toggleState" removeTodo.bind="removeTodo"/>
+        </t>
+
+    </t>
+
+</templates>
