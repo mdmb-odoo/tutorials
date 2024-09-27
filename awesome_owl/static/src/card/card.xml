@@ -2,17 +2,18 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.card">
-        <div class="card d-inline-block m-2" style="width: 18rem;">
+        <div class="card d-inline-block m-2" t-att-style="'width:'+ this.props.size*18 +'rem;'">
             <div class="card-body" t-att-class="props.class" >
-                <h5 class="card-title">
+                <div class="card-title">
                     <!-- <t t-esc="props.title" /> -->
                     <t t-slot="title"/>
-                </h5>
-                <span class="p-2 btn" t-on-click="toggleState">toggle</span>
-                <p class="card-text">
+                    <span class="p-2 btn" t-if="this.props.toggle" t-on-click="toggleState">toggle</span>
+                </div>
+                
+                <div class="card-text">
                     <!-- <t t-out="props.body" /> -->
-                    <t t-if="this.state.value" t-slot="content"/>
-                </p>
+                    <t t-if="this.state.value or !this.props.toggle" t-slot="content"/>
+                </div>
             </div>
         </div>
     </t>

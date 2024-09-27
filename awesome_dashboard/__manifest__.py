@@ -23,8 +23,12 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'awesome_dashboard/static/src/**/*',
+            'awesome_dashboard/static/src/dashboard_action.js',
+            'awesome_owl/static/src/card/*',
         ],
+        'awesome_dashboard.dashboard_assets': [
+            'awesome_dashboard/static/src/dashboard/*',
+        ]
     },
     'license': 'AGPL-3'
 }
