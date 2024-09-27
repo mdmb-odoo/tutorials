@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboardItem">
+        <Card size="this.props.size" toggle="this.props.toggle" class="{'align-middle text-center' : true}">
+            <t t-set-slot="title">
+                <t t-slot="title"/>
+            </t>
+            <t t-set-slot="content">
+                <t t-slot="default"/>
+            </t>
+        </Card>
+    </t>
+
+</templates>

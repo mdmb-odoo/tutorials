@@ -18,7 +18,19 @@ export class Card extends Component {
         },
         slots : {
             optional : true
-        }
+        },
+        size : {
+            type : Number,
+            optional : true
+        },
+        toggle : {
+            type : Boolean,
+            optional : true
+        },
+    };
+    static defaultProps = {
+        size: 1,
+        toggle : false
     };
 
     setup() {

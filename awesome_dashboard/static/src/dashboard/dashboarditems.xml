@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+     <!-- Number Card Template -->
+     <t t-name="awesome_dashboard.NumberCard">
+        <Card size="this.props.size" toggle="false" class="{'align-middle text-center' : true}">
+            <t t-set-slot="title">
+                <t t-esc="this.props.title"/>
+            </t>
+            <t t-set-slot="content">
+                <t t-esc="this.props.data"/>
+            </t>
+        </Card>
+    </t>
+
+    <!-- Pie Chart Card Template -->
+    <t t-name="awesome_dashboard.PieChartCard">
+        <Card size="1" toggle="false" class="{'align-middle text-center' : true}">
+            <t t-set-slot="title">
+                <t t-esc="this.props.title"/>
+            </t>
+            <t t-set-slot="content">
+                <PieChart data="this.props.data" />
+            </t>
+        </Card>
+    </t>
+
+</templates>

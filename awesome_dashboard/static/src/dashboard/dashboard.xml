@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">
+
+            <t t-set-slot="control-panel-additional-actions">
+                <button type="button" t-on-click="openDialog" class="d-print-none btn p-0 ms-1 lh-sm border-0">
+                    <i class="fa fa-cog" title=""/>
+                </button>
+            </t>
+            
+
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="this.showCustomers"> Customers </button>
+                <button class="btn btn-primary" t-on-click="this.showLeads"> Leads </button>
+            </t>
+
+            <div class="card-group">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <t t-set="itemProps" t-value="this.getDashboardComponentValues(item, this.stats.data)"/>
+                    <DashboardItem size="item.size || 1" t-if="itemProps.display==='true' ? true : false">
+                        <t t-component="item.Component" t-props="itemProps" />
+                    </DashboardItem>
+                    
+                </t>
+            </div>
+            <!-- <DashboardItem size="2">
+                <t t-set-slot="title">
+                    Number of new orders this month
+                </t>
+                <h2 class="text-success"> <t t-esc="this.stats.data['nb_new_orders']"/> </h2>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <t t-set-slot="title">
+                    Total amount of new orders this month
+                </t>
+                <h2 class="text-success"> <t t-esc="this.stats.data['total_amount']"/> </h2>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <t t-set-slot="title">
+                    Average amount of t-shirt by order this month
+                </t>
+                <h2 class="text-success"> <t t-esc="this.stats.data['average_quantity']"/> </h2>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <t t-set-slot="title">
+                    Number of cancelled orders this month
+                </t>
+                <h2 class="text-success"> <t t-esc="this.stats.data['nb_cancelled_orders']"/> </h2>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <t t-set-slot="title">
+                    Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
+                </t>
+                <h2 class="text-success"> <t t-esc="this.stats.data['average_time']"/> </h2>
+            </DashboardItem>
+            <div>
+                <DashboardItem size="1">
+                    <PieChart data="[this.stats.data['orders_by_size']['m'],this.stats.data['orders_by_size']['s'],this.stats.data['orders_by_size']['xl']]"/>
+                </DashboardItem>
+            </div> -->
+            <!-- <t t-esc="this.state.statistics"/> -->
+            
+        </Layout>
+        
+    </t>
+
+</templates>
